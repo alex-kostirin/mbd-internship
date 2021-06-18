@@ -1,7 +1,9 @@
+//go:generate rice embed-go
 package main
 
 import (
 	"flag"
+	rice "github.com/GeertJohan/go.rice"
 	"github.com/pkg/errors"
 	log "github.com/sirupsen/logrus"
 	"mbd-internship/internal/api"
@@ -30,6 +32,13 @@ func main() {
 		log.Fatalf("failed create api handler: %+v", errors.WithStack(err))
 	}
 	defer apiHandler.Stop()
+	customRice := rice.Config{LocateOrder: []rice.LocateMethod{rice.LocateEmbedded}}
+	if debug {
+		customRice = rice.Config{LocateOrder: []rice.LocateMethod{rice.LocateFS}}
+	}
+	fileHandler := http.StripPrefix("/map/", http.FileServer(customRice.MustFindBox("../../static").HTTPBox()))
+
+	http.Handle("/map/", fileHandler)
 	http.Handle("/", apiHandler)
 
 	log.Infof("server is listening at %s", addr)
