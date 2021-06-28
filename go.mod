@@ -10,4 +10,5 @@ require (
 	github.com/sirupsen/logrus v1.8.1 // indirect
 	github.com/stretchr/testify v1.7.0 // indirect
 	github.com/syndtr/goleveldb v1.0.0 // indirect
+	golang.org/x/time v0.0.0-20210611083556-38a9dc6acbc6 // indirect
 )

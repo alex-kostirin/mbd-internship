@@ -14,7 +14,7 @@ import (
 	"time"
 )
 
-type collectorRequest struct {
+type CollectorRequest struct {
 	Lat    float64   `json:"lat"`
 	Lon    float64   `json:"lon"`
 	UserID uuid.UUID `json:"user_id"`
@@ -28,7 +28,7 @@ func collector(worker *collectorWorker) http.HandlerFunc {
 			return
 		}
 		requestID := rand.Int()
-		request := collectorRequest{}
+		request := CollectorRequest{}
 		if err := json.NewDecoder(r.Body).Decode(&request); err != nil {
 			log.Infof("%d: can not decode request: %+v", requestID, err)
 			w.WriteHeader(http.StatusBadRequest)
